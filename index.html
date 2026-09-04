@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Digital</title>
+    <style>
+        :root {
+            --primary: #0F2C59;       /* Azul oscuro principal */
+            --primary-light: #1B4D89; /* Azul medio para hover y destacados */
+            --bg: #f4f6f9;            /* Fondo gris ultra suave */
+            --card-bg: #ffffff;       /* Blanco puro */
+            --text: #111827;          /* Texto oscuro legible */
+            --text-muted: #6B7280;    /* Texto secundario */
+            --border: #E5E7EB;       /* Borde sutil */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER & DATOS DEL NEGOCIO */
+        header {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 24px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+        }
+
+        .logo {
+            max-width: 120px;
+            max-height: 90px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .nombre-negocio {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-negocio {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        /* NAVEGACIÓN POR CATEGORÍAS */
+        .nav-container {
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            z-index: 100;
+            padding: 10px 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .nav-categorias {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .nav-categorias::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .btn-cat {
+            background: #EBF1F6;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cat.activo {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        main {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+            flex: 1;
+        }
+
+        .seccion-categoria {
+            margin-bottom: 28px;
+        }
+
+        .titulo-categoria {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* GRID Y CARDS DE PRODUCTOS */
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .card-producto {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .producto-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-right: 8px;
+        }
+
+        .producto-nombre {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .producto-codigo {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .producto-precio {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            white-space: nowrap;
+        }
+
+        /* ESTADO DE CARGA */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* FOOTER CENTRADO */
+        .footer-menwapp {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 24px 16px;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-menwapp .logo-footer {
+            height: 38px;
+            width: auto;
+            margin-bottom: 8px;
+            object-fit: contain;
+        }
+
+        .footer-menwapp .descripcion {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 4px 0 12px 0;
+            max-width: 400px;
+        }
+
+        .footer-menwapp .btn-whatsapp-footer {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            background: #25D366;
+            color: #ffffff;
+            padding: 9px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .footer-menwapp .btn-whatsapp-footer:active {
+            transform: scale(0.98);
+        }
+
+        .footer-menwapp .copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img id="logo" class="logo" src="https://embajadachina.menwapp.com/logo.png" alt="Logo" onerror="this.style.display='none'">
+        <h1 id="nombre-negocio" class="nombre-negocio">Cargando...</h1>
+        <div class="info-negocio">
+            <span id="nit-negocio"></span>
+            <span id="direccion-negocio"></span>
+            <span id="telefono-negocio"></span>
+        </div>
+    </header>
+
+    <div class="nav-container">
+        <nav id="nav-categorias" class="nav-categorias"></nav>
+    </div>
+
+    <main id="menu-container">
+        <div class="loading">Cargando la carta...</div>
+    </main>
+
+    <footer class="footer-menwapp">
+        <div>
+            <img class="logo-footer" src="https://capitalbga.menwapp.com/imagenes/ASCOMP.JPG" alt="ASCOMP Logo">
+        </div>
+        
+        <div class="descripcion">
+            Desarrollamos tu sistema de Gestor de pedidos con menú digital
+        </div>
+        
+        <div class="soporte">
+            <a class="btn-whatsapp-footer" 
+               href="https://wa.me/573108094441?text=hola,%20tengo%20un%20restaurante%20y%20quiero%20sistematizar%20mi%20negocio" 
+               target="_blank">
+                📲 Información sobre el sistema
+            </a>
+        </div>
+        
+        <div class="copyright">
+            Solución hecha por <strong>ASCOMP</strong><br>
+            Exclusivo para el sistema POS <strong>ASCOMP</strong>
+        </div>
+    </footer>
+
+   <script>
+        // CONFIGURACIÓN DE ARCHIVOS Y RECURSOS
+        const CLIENTE_TARGET = "embajada";
+        const URL_BASE_API = "https://nube-ascomp.menwapp.com";
+
+        const DAT_URL = "PERSO.DAT"; 
+        const MENU_URL = `${URL_BASE_API}/usuarios/${CLIENTE_TARGET}/menu.json`;   
+        const LOGO_DEFAULT = "https://embajadachina.menwapp.com/logo.png";
+        const cb = `?t=${Date.now()}`;
+
+        // 1. CARGAR DATOS DEL NEGOCIO (.DAT)
+        async function cargarDatosEmpresa() {
+            const imgLogo = document.getElementById("logo");
+            imgLogo.src = LOGO_DEFAULT; // Asignamos la URL fija por defecto
+
+            try {
+                const res = await fetch(`${DAT_URL}${cb}`);
+                if (!res.ok) throw new Error("No se pudo cargar el archivo .dat");
+                
+                const texto = await res.text();
+                
+                const campos = texto.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
+                                   ?.map(c => c.replace(/^"|"$/g, '').trim()) || [];
+
+                if (campos.length >= 5) {
+                    document.getElementById("nombre-negocio").innerText = campos[1] || "Restaurante";
+                    document.getElementById("direccion-negocio").innerText = campos[2] ? `📍 ${campos[2]}` : '';
+                    document.getElementById("telefono-negocio").innerText = campos[3] ? `📞 ${campos[3]}` : '';
+                    document.getElementById("nit-negocio").innerText = campos[4] ? `NIT: ${campos[4]}` : '';
+                }
+            } catch (e) {
+                console.warn("Aviso: No se cargó el archivo .dat dinámico, usando datos por defecto.", e);
+                document.getElementById("nombre-negocio").innerText = "MI RESTAURANTE";
+            }
+        }
+
+        // 2. CARGAR Y RENDERIZAR MENÚ (JSON)
+        async function cargarMenu() {
+            const container = document.getElementById("menu-container");
+            const nav = document.getElementById("nav-categorias");
+
+            try {
+                const res = await fetch(`${MENU_URL}${cb}`);
+                if (!res.ok) throw new Error("Error consultando el menú");
+
+                const data = await res.json();
+                const menu = data.menu || data;
+
+                container.innerHTML = "";
+                nav.innerHTML = "";
+
+                let esPrimeraCat = true;
+
+                for (const [categoria, productos] of Object.entries(menu)) {
+                    const catId = "cat-" + categoria.replace(/\s+/g, '-').toLowerCase();
+
+                    // A) BOTÓN DE NAVEGACIÓN
+                    const btnNav = document.createElement("button");
+                    btnNav.className = `btn-cat ${esPrimeraCat ? 'activo' : ''}`;
+                    btnNav.innerText = categoria.trim();
+                    btnNav.onclick = (e) => {
+                        document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
+                        e.target.classList.add('activo');
+                        
+                        const el = document.getElementById(catId);
+                        if (el) {
+                            const offset = 70;
+                            const bodyRect = document.body.getBoundingClientRect().top;
+                            const elementRect = el.getBoundingClientRect().top;
+                            const elementPosition = elementRect - bodyRect;
+                            
+                            window.scrollTo({
+                                top: elementPosition - offset,
+                                behavior: 'smooth'
+                            });
+                        }
+                    };
+                    nav.appendChild(btnNav);
+
+                    // B) BLOQUE DE CATEGORÍA
+                    const seccion = document.createElement("section");
+                    seccion.className = "seccion-categoria";
+                    seccion.id = catId;
+
+                    let htmlProductos = `<h2 class="titulo-categoria">${categoria.trim()}</h2><div class="grid-productos">`;
+
+                    productos.forEach(p => {
+                        const precioFormateado = p.precio > 0 
+                            ? `$${Number(p.precio).toLocaleString('es-CO')}` 
+                            : 'Consultar';
+
+                        htmlProductos += `
+                            <div class="card-producto">
+                                <div class="producto-info">
+                                    <span class="producto-nombre">${p.articulo}</span>
+                                    <span class="producto-codigo">Cód: ${p.codigo}</span>
+                                </div>
+                                <span class="producto-precio">${precioFormateado}</span>
+                            </div>
+                        `;
+                    });
+
+                    htmlProductos += `</div>`;
+                    seccion.innerHTML = htmlProductos;
+                    container.appendChild(seccion);
+
+                    esPrimeraCat = false;
+                }
+
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<div class="loading">❌ No se pudo cargar la carta. Revisa la conexión.</div>`;
+            }
+        }
+
+        // INICIALIZACIÓN
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarDatosEmpresa();
+            cargarMenu();
+        });
+    </script>
+</body>
+</html>
