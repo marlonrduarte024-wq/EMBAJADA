@@ -1,0 +1,977 @@
+{
+    "actualizado": "2026-09-15 15:58:03",
+    "menu": {
+        "BEBIDAS": [
+            {
+                "codigo": "57",
+                "articulo": "AGUILA NORMAL",
+                "precio": 7000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "05",
+                "articulo": "BBC ROSE",
+                "precio": 10000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "59",
+                "articulo": "CLUB COLOMBIA",
+                "precio": 9000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "305",
+                "articulo": "COMBO FUTBOLERO",
+                "precio": 75000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "157",
+                "articulo": "COPA DE TINTO DE VERANO",
+                "precio": 26000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "60",
+                "articulo": "CORONA",
+                "precio": 13000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "61",
+                "articulo": "CORONITA",
+                "precio": 8000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "464",
+                "articulo": "CUBETAZO AGUILA-CLUB C",
+                "precio": 40000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "781",
+                "articulo": "CUBETAZO CORONITA",
+                "precio": 43000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "999",
+                "articulo": "MICHELADA CEREZA",
+                "precio": 8000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "54",
+                "articulo": "MICHELADA DE MANGO",
+                "precio": 8000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "9997",
+                "articulo": "MICHELADA ORALE",
+                "precio": 21000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "99",
+                "articulo": "MICHELADA TRADICIONAL",
+                "precio": 5000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "466",
+                "articulo": "MODELO",
+                "precio": 18000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "53",
+                "articulo": "STELLA ARTOIS",
+                "precio": 13000.0,
+                "iva": 0.0
+            }
+        ],
+        "BEBIDAS SIN ALCOHOL": [
+            {
+                "codigo": "5555",
+                "articulo": "AGUA HATSU",
+                "precio": 6000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "67",
+                "articulo": "BRETAÑA",
+                "precio": 6500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "76",
+                "articulo": "CANADA-DRY",
+                "precio": 6000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "056",
+                "articulo": "DEL CIELO",
+                "precio": 14000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "00",
+                "articulo": "GASEOSA COLOMBIANA",
+                "precio": 6500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "222",
+                "articulo": "GASEOSA HIPINTO",
+                "precio": 6500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "83",
+                "articulo": "GASEOSA MANZANA",
+                "precio": 6500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "787",
+                "articulo": "GASEOSA NARANJA",
+                "precio": 6500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "2222",
+                "articulo": "GASEOSA PEPSI",
+                "precio": 6500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "8989",
+                "articulo": "GATORADE",
+                "precio": 8000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "69",
+                "articulo": "GRANIZADA DE HIERBABUENA",
+                "precio": 13000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "78",
+                "articulo": "GRANIZADA DE LIMON",
+                "precio": 9500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "79",
+                "articulo": "GRANIZADA DE MANDARINA",
+                "precio": 13000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "101",
+                "articulo": "GRANIZADA DE MARACUYA",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "71",
+                "articulo": "GRANIZADA DE NARANJA",
+                "precio": 13000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "420",
+                "articulo": "LIMONADA CAPITAL",
+                "precio": 10000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "72",
+                "articulo": "LIMONADA DE COCO",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "134",
+                "articulo": "MALTEADA DE OREO",
+                "precio": 17000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "036",
+                "articulo": "MOJITO SIN LICOR",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "64",
+                "articulo": "SODA DE JENGIBRE NARANJA",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "63",
+                "articulo": "SODA DE LULO",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "785",
+                "articulo": "SODA FRUTOS AMARILLOS",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "62",
+                "articulo": "SODA FRUTOS ROJOS",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "70",
+                "articulo": "SODA HATSU",
+                "precio": 8000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "82",
+                "articulo": "TE HATSU",
+                "precio": 8500.0,
+                "iva": 0.0
+            }
+        ],
+        "COCTELES": [
+            {
+                "codigo": "630.",
+                "articulo": "BLACK CATRINA",
+                "precio": 25000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "215",
+                "articulo": "BLUE CAPITAL",
+                "precio": 25000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "425",
+                "articulo": "FREE BRAMBELL",
+                "precio": 14000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "87",
+                "articulo": "GIN TONIC",
+                "precio": 33000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "88",
+                "articulo": "JP CHENET",
+                "precio": 22000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "92",
+                "articulo": "MARGARITA",
+                "precio": 28000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "91",
+                "articulo": "MOJITO",
+                "precio": 28000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "209",
+                "articulo": "MOSCOW MULE",
+                "precio": 28000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "126",
+                "articulo": "NEGRONI",
+                "precio": 33000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "89",
+                "articulo": "OASIS",
+                "precio": 25000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "90",
+                "articulo": "OLD FASHIONED",
+                "precio": 27000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "250",
+                "articulo": "ORGASMO",
+                "precio": 33000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "84",
+                "articulo": "PIÑA COLADA",
+                "precio": 30000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "8999",
+                "articulo": "PROMO 2X1 COCTEL CUBA",
+                "precio": 30000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "888",
+                "articulo": "PROMO 2X1 MARGARITA",
+                "precio": 30000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1252",
+                "articulo": "PROMO 3X2",
+                "precio": 44900.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "86",
+                "articulo": "QUEEN ROSE",
+                "precio": 25000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "216",
+                "articulo": "SANTORINI",
+                "precio": 28000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "85",
+                "articulo": "TEQUILA SUNRISE",
+                "precio": 28000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "220",
+                "articulo": "TEXAS",
+                "precio": 28000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "225",
+                "articulo": "VENECIA MARTINI",
+                "precio": 28000.0,
+                "iva": 0.0
+            }
+        ],
+        "ENSALDAS ": [
+            {
+                "codigo": "19",
+                "articulo": "ENSALADA CAPITAL",
+                "precio": 36000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "18",
+                "articulo": "ENSALADA FRESH CAMARON",
+                "precio": 48000.0,
+                "iva": 0.0
+            }
+        ],
+        "ENTRADAS": [
+            {
+                "codigo": "9",
+                "articulo": "CHAMPIÑONES AL BARRIL",
+                "precio": 31000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "4",
+                "articulo": "CHICHARRONES DE PANCETA",
+                "precio": 38000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "520",
+                "articulo": "CHORIZOS CYROP PANELA",
+                "precio": 33000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "239",
+                "articulo": "MADURITOS EN REDUCCION DE KOLA HIPINTO",
+                "precio": 17000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "3",
+                "articulo": "MAZORCAS AL BARRIL",
+                "precio": 32000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "8",
+                "articulo": "NACHOS DE MAIZ",
+                "precio": 38000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "7",
+                "articulo": "PAPAS DEL CHEF",
+                "precio": 50000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1",
+                "articulo": "PAPITAS CAPITAL",
+                "precio": 23000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "6",
+                "articulo": "SALCHIPAPA",
+                "precio": 32000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "5",
+                "articulo": "TAQUITOS DE CHANCHITO X4",
+                "precio": 35000.0,
+                "iva": 0.0
+            }
+        ],
+        "ESPECIALES DE MAR ": [
+            {
+                "codigo": "38",
+                "articulo": "PULPO AL CARBON",
+                "precio": 85000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "37",
+                "articulo": "SALMON A LA BRASA",
+                "precio": 66000.0,
+                "iva": 0.0
+            }
+        ],
+        "FUERTES DE CERDO ": [
+            {
+                "codigo": "11",
+                "articulo": "BONDIOLA AL BARRIL 400GR",
+                "precio": 51000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "10",
+                "articulo": "COSTILLAS AHUMADAS AL BARRIL 400GR",
+                "precio": 57000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "630",
+                "articulo": "PUNTA DE ANCA DE CERDO",
+                "precio": 54000.0,
+                "iva": 0.0
+            }
+        ],
+        "FUERTES DE RES ": [
+            {
+                "codigo": "29",
+                "articulo": "BIFE CHORIZO 350GR",
+                "precio": 61000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "320",
+                "articulo": "BIFE DE CHORIZO SANTANDEREANO",
+                "precio": 70000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "454",
+                "articulo": "BONDIOLA + PECHUGA 150GRS",
+                "precio": 50000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "26",
+                "articulo": "FILET MIGNON",
+                "precio": 69000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "34",
+                "articulo": "LOMITO FINO ESPECIAL 300GR",
+                "precio": 76000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "33",
+                "articulo": "LOMO FINO 300GR",
+                "precio": 64000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "28",
+                "articulo": "LOMO SALTADO DEL CHEF",
+                "precio": 63000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1200",
+                "articulo": "MEDIA SOBREBARRIGA",
+                "precio": 30000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "32",
+                "articulo": "MILANESA NAPOLITANA",
+                "precio": 68000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "23",
+                "articulo": "MIXTO DE CRANES AHUMADAS",
+                "precio": 84000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "212",
+                "articulo": "NEW YORK + BONDIOLA 150GRS",
+                "precio": 55000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "111",
+                "articulo": "NEW YORK + PECHUGA 150 GRS",
+                "precio": 55000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "24",
+                "articulo": "NEW YORK STEAK 350GR",
+                "precio": 68000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "27",
+                "articulo": "PECHUGA A LA PLANCHA 350GR",
+                "precio": 43000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "22",
+                "articulo": "PICANHA 300GR",
+                "precio": 64000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "31",
+                "articulo": "RIB EYE 350GR",
+                "precio": 68000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "326",
+                "articulo": "SOBREBARRIGA",
+                "precio": 49000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "25",
+                "articulo": "TOMAHAWK DE RES 750GRS",
+                "precio": 113000.0,
+                "iva": 0.0
+            }
+        ],
+        "HAMBURGUESAS": [
+            {
+                "codigo": "205",
+                "articulo": "2x1 PROMO MONACO",
+                "precio": 55000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "44",
+                "articulo": "HAMB. BUENOS AIRES",
+                "precio": 43000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "40",
+                "articulo": "HAMB. CAPITAL",
+                "precio": 35000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "49",
+                "articulo": "HAMB. MIAMI",
+                "precio": 44000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "43",
+                "articulo": "HAMB. MONACO",
+                "precio": 38000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "42",
+                "articulo": "HAMB. PARIS",
+                "precio": 42000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "39",
+                "articulo": "HAMB. TOKIO",
+                "precio": 44000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "45",
+                "articulo": "HAMB.CLASICA",
+                "precio": 24500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "41",
+                "articulo": "HAMB.MI TIERRA",
+                "precio": 41000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "102",
+                "articulo": "HAMBURGUESA LA D.F.",
+                "precio": 40000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "001",
+                "articulo": "PROMO H. BACON BERRY",
+                "precio": 20000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "002",
+                "articulo": "PROMO H. BACON BERRY + PAPAS",
+                "precio": 25000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "47",
+                "articulo": "SANDWICH DE POLLO",
+                "precio": 27000.0,
+                "iva": 0.0
+            }
+        ],
+        "MENU INFANTIL": [
+            {
+                "codigo": "51",
+                "articulo": "NUGGETS DE POLLO",
+                "precio": 30000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "50",
+                "articulo": "SALCHIPAPA MINI",
+                "precio": 20000.0,
+                "iva": 0.0
+            }
+        ],
+        "PASTAS Y ARROCES ": [
+            {
+                "codigo": "15",
+                "articulo": "ARROZ MAR Y TIERRA",
+                "precio": 68000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "16",
+                "articulo": "ARROZ ORIENTAL",
+                "precio": 37000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "17",
+                "articulo": "ARROZ PORK THAI",
+                "precio": 42000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "360",
+                "articulo": "COMBINADO MILAN PASTA",
+                "precio": 51000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "865",
+                "articulo": "PASTA BOLORROSA",
+                "precio": 43000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "13",
+                "articulo": "PASTA CARBONARA",
+                "precio": 39500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "960",
+                "articulo": "PASTA COMBINACION SANTORINI",
+                "precio": 45000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "14",
+                "articulo": "PASTA MARINERA",
+                "precio": 67500.0,
+                "iva": 0.0
+            }
+        ],
+        "PERROS": [
+            {
+                "codigo": "21",
+                "articulo": "PERRO CAPITAL",
+                "precio": 38000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "852",
+                "articulo": "PERRO PORK CAPITAL",
+                "precio": 39500.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "20",
+                "articulo": "PERRO SENCILLO",
+                "precio": 26000.0,
+                "iva": 0.0
+            }
+        ],
+        "POLLO AL BARRIL": [
+            {
+                "codigo": "4445",
+                "articulo": "MEDIO POLLO PERUANO",
+                "precio": 40000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "201",
+                "articulo": "MIERCOLES DE ALAS",
+                "precio": 50000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "36",
+                "articulo": "POLLO BBQ",
+                "precio": 71000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "35",
+                "articulo": "POLLO PERUANO",
+                "precio": 71000.0,
+                "iva": 0.0
+            }
+        ],
+        "POSTRES": [
+            {
+                "codigo": "98",
+                "articulo": "POSTRE DE LA CASA",
+                "precio": 17000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "560",
+                "articulo": "POSTRE DULCE TENTACION",
+                "precio": 16000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "230",
+                "articulo": "POSTRE FANTASIA DE MARACUYA",
+                "precio": 16000.0,
+                "iva": 0.0
+            }
+        ],
+        "VINOS Y LICORES ": [
+            {
+                "codigo": "369",
+                "articulo": "AGUARDIENTE AMARILLO",
+                "precio": 120000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "365",
+                "articulo": "AGUARDIENTE TAPA AZUL",
+                "precio": 110000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "651",
+                "articulo": "AGUARDIENTE TAPA VERDE",
+                "precio": 110000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "15900",
+                "articulo": "BUCHANANS DELUXE12 SHOT",
+                "precio": 35000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "5454",
+                "articulo": "BUCHANANS TWO SOULS",
+                "precio": 350000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1399",
+                "articulo": "BUCHANANS TWO SOULS SHOT",
+                "precio": 60000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "026",
+                "articulo": "COPA DE SANGRIA",
+                "precio": 26000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "206",
+                "articulo": "COPA DE TINTO VERANO",
+                "precio": 20000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "052",
+                "articulo": "COPA DE VINO OLAS DEL SUR MALBEC",
+                "precio": 17000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "19800",
+                "articulo": "COPA VINO BLANCO",
+                "precio": 25000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1299",
+                "articulo": "COPA VINO TERRA VEGA MALBEC",
+                "precio": 26000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "599",
+                "articulo": "ELECTROLIT",
+                "precio": 15000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1208",
+                "articulo": "J.P CHANET FASHION",
+                "precio": 130000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "105",
+                "articulo": "JARRA DE SANGRIA",
+                "precio": 110000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "93",
+                "articulo": "JOHNNIE WALKER DOUBLE BLACK",
+                "precio": 300000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1888",
+                "articulo": "LAMBRUSCO",
+                "precio": 70000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1207",
+                "articulo": "LAMBRUSCO BOTTICELLO ROSADO",
+                "precio": 85000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "666",
+                "articulo": "MEDIO GUARO",
+                "precio": 55000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "788",
+                "articulo": "MONKEY SHOULDER",
+                "precio": 435000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "5556",
+                "articulo": "SHOT GINEBRA GORDONS",
+                "precio": 12000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "6333",
+                "articulo": "SHOT TEQUILA JOSE CUERVO",
+                "precio": 17000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1205",
+                "articulo": "TERRA VEGA CABERNET SUAVIGNON",
+                "precio": 100000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "121",
+                "articulo": "TRAGO JHONNIE WALKER DOUBLE BLACK",
+                "precio": 70000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1204",
+                "articulo": "VINO BLANCO TERRAVEGA",
+                "precio": 90000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "988",
+                "articulo": "VINO TERRA VEGA MALBEC",
+                "precio": 90000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1201",
+                "articulo": "VINO TINTO ANDEAN VINEYARDS",
+                "precio": 110000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "1203",
+                "articulo": "VINO TINTO ANTAÑO CRIANZA",
+                "precio": 130000.0,
+                "iva": 0.0
+            },
+            {
+                "codigo": "96",
+                "articulo": "WHISKY BUCHANAN S MALT EDITION",
+                "precio": 440000.0,
+                "iva": 0.0
+            }
+        ]
+    }
+}

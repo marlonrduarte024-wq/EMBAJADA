@@ -1,0 +1,172 @@
+{
+  "portada": {
+    "banner": "https://nube.menwapp.com/distrito/imagenes/portada_banner.png",
+    "logo": "https://nube.menwapp.com/distrito/imagenes/portada_logo.png"
+  },
+  "orden_categorias": [
+    "CARNES Y MAS",
+    "HAMBURGUESAS",
+    "PICADAS Y PARRILLADAS",
+    "PERROS",
+    "BEBIDAS"
+  ],
+  "banners_categoria": {
+    "POLLOS": "c:/posred/bot/web/assets/categorias/POLLOS.png",
+    "COMIDAS RAPIDAS": "c:/posred/bot/web/assets/categorias/COMIDAS_RAPIDAS.png",
+    "HAMBURGUESAS": "https://nube.menwapp.com/distrito/imagenes/cat_hamburguesas.png",
+    "CARNES Y MAS": "https://res.cloudinary.com/di0wadljs/image/upload/v1775767484/menu/portada/cat_CARNES_Y_MAS.jpg",
+    "PERRO MONUMENTAL": "https://nube.menwapp.com/distrito/imagenes/cat_perro_monumental.png",
+    "PAPAS ": "https://nube.menwapp.com/distrito/imagenes/cat_papas_.png",
+    "PROMOS": "https://res.cloudinary.com/di0wadljs/image/upload/v1775855732/menu/portada/cat_PROMOS.png",
+    "PROMOS DEL DIA": "https://nube.menwapp.com/distrito/imagenes/cat_promos_del_dia.jpeg"
+  },
+  "horarios": {
+    "Lunes": {
+      "cerrado": false,
+      "rangos": [
+        {
+          "inicio": "11:45",
+          "fin": "14:30"
+        },
+        {
+          "inicio": "17:00",
+          "fin": "23:00"
+        }
+      ]
+    },
+    "Martes": {
+      "cerrado": true,
+      "rangos": [
+        {
+          "inicio": "12:00",
+          "fin": "14:30"
+        },
+        {
+          "inicio": "17:00",
+          "fin": "23:00"
+        }
+      ]
+    },
+    "Miércoles": {
+      "cerrado": false,
+      "rangos": [
+        {
+          "inicio": "11:45",
+          "fin": "14:30"
+        },
+        {
+          "inicio": "17:00",
+          "fin": "23:00"
+        }
+      ]
+    },
+    "Jueves": {
+      "cerrado": false,
+      "rangos": [
+        {
+          "inicio": "11:45",
+          "fin": "14:30"
+        },
+        {
+          "inicio": "17:00",
+          "fin": "23:00"
+        }
+      ]
+    },
+    "Viernes": {
+      "cerrado": false,
+      "rangos": [
+        {
+          "inicio": "11:45",
+          "fin": "14:30"
+        },
+        {
+          "inicio": "17:00",
+          "fin": "23:00"
+        }
+      ]
+    },
+    "Sábado": {
+      "cerrado": false,
+      "rangos": [
+        {
+          "inicio": "17:00",
+          "fin": "23:30"
+        }
+      ]
+    },
+    "Domingo": {
+      "cerrado": false,
+      "rangos": [
+        {
+          "inicio": "11:45",
+          "fin": "14:30"
+        },
+        {
+          "inicio": "17:00",
+          "fin": "23:00"
+        }
+      ]
+    }
+  },
+  "recomendados": {
+    "83": [
+      "Viernes"
+    ],
+    "99": [
+      "Sábado"
+    ],
+    "101": [
+      "Domingo",
+      "Jueves"
+    ],
+    "131": [],
+    "132": [],
+    "160": [
+      "Lunes",
+      "Miércoles"
+    ],
+    "180": [],
+    "181": [],
+    "190": [],
+    "191": [],
+    "193": [],
+    "195": [],
+    "196": [],
+    "197": [],
+    "203": [],
+    "204": [],
+    "205": [],
+    "206": [],
+    "210": [],
+    "211": [
+      "Lunes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Domingo"
+    ],
+    "212": [
+      "Lunes",
+      "Miércoles",
+      "Viernes",
+      "Sábado",
+      "Jueves",
+      "Domingo"
+    ],
+    "214": [],
+    "215": [
+      "Miércoles",
+      "Jueves",
+      "Sábado",
+      "Viernes",
+      "Domingo",
+      "Lunes"
+    ],
+    "217": [],
+    "218": [],
+    "250": [],
+    "04": [],
+    "027": []
+  }
+}
