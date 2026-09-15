@@ -1,20 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&family=Poppins:wght@600&display=swap');
 
 :root {
-  /* MARCA (Ajustados para mejor contraste en texto/botones) */
-  --color-principal: #f2b705;    /* amarillo hamburguesa */
-  --color-secundario: #ffe066;   /* amarillo más vivo para destacar */
-  --color-acento: #ff8c00;       /* acento cálido */
+  /* MARCA */
+  --color-principal: #c22026;   /* Rojo Carmesí */
+  --color-secundario: #d4af37;  /* Dorado Dorado / Bronce */
+  --color-acento: #007a5e;      /* Verde Pavo Real / Esmeralda */
 
-  /* BASE (Mayor separación visual entre fondo y tarjetas) */
-  --color-fondo: #0a0a0a;        /* negro puro para fondo */
-  --color-card: #141414;         /* gris muy oscuro para tarjetas */
-  --color-borde: #333333;        /* borde más visible */
+  /* BASE */
+  --color-fondo: #fbf8ef;       /* Crema Claro Cálido */
+  --color-card: #ffffff;        /* Blanco Marfil */
+  --color-borde: #705e32;       /* Bronce Oscuro */
 
-  /* TEXTO (Contraste alto) */
-  --color-texto: #ffffff;        /* blanco puro para títulos */
-  --color-texto-secundario: #e0e0e0; /* blanco suave legible (reemplaza el gris opaco) */
-  --color-texto-mutado: #a0a0a0; /* gris para detalles menores */
+  /* TEXTO */
+  --color-texto: #9e1c20;       /* Carmesí Oscuro (Títulos y destacado) */
+  --color-texto-secundario: #5c4b28; /* Marrón Sepia Oscuro (Lectura clara y legible) */
 }
 * { box-sizing: border-box; }
 
