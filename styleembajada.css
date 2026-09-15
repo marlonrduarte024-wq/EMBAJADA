@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&family=Poppins:wght@600&display=swap');
 
 :root {
+:root {
   /* MARCA */
-  --color-principal: #f2b705;   /* amarillo hamburguesa */
-  --color-secundario: #ffd23f;  /* amarillo brillante */
-  --color-acento: #ff8c00;      /* acento cálido */
+  --color-principal: #f2b705;    
+  --color-secundario: #ffd23f;   
+  --color-acento: #ff8c00;       
 
   /* BASE */
-  --color-fondo: #0d0d0d;   /* negro profundo */
-  --color-card: #1a1a1a;    /* negro suave */
+  --color-fondo: #0d0d0d;        /* negro profundo */
+  --color-card: #1a1a1a;         /* negro suave */
   --color-borde: #2a2a2a;
 
   /* TEXTO */
   --color-texto: #ffffff;
   --color-texto-secundario: #bfbfbf;
 }
-
 * { box-sizing: border-box; }
 
 body {
