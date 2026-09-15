@@ -14,9 +14,9 @@ let adicionalesConfig = { grupos: {}, productos: {} }; // Nueva variable
 
 
 // ============================================================
-// CONFIGURACIÓN DE RUTAS distrito
+// CONFIGURACIÓN DE RUTAS embajada
 // ============================================================
-const BUCKET_URL = "https://nube.menwapp.com/distrito/json"; // Ruta principal
+const BUCKET_URL = "https://nube.menwapp.com/embajada/json"; // Ruta principal
 const BACKUP_URL = "https://apidistrito.menwapp.com/web";       // Ruta de respaldo
 const cb = `?t=${new Date().getTime()}`; 
 
@@ -53,7 +53,7 @@ async function cargarArchivo(nombreArchivo) {
 // INICIALIZACIÓN DE LA APP
 // ============================================================
 async function inicializarApp() {
-    console.log("🚀 Iniciando MenWapp (distrito)...");
+    console.log("🚀 Iniciando MenWapp (embajada)...");
 
     try {
         // Carga en paralelo de los 9 archivos con sus nombres originales
@@ -1167,7 +1167,6 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
-
 
 
 
