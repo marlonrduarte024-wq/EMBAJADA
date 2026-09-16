@@ -909,7 +909,7 @@ function renderMenu() {
                                 <span class="badge-estrella">⭐ Hoy</span>
                                 ${imgRuta 
                                     ? `<img src="${imgRuta}" loading="lazy" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'sin-foto\\'>🥢</div>';">` 
-                                    : '<div class="sin-foto">🥢</div>'}
+                                    : '<div class="sin-foto"></div>'}
                             </div>
                             <div class="info">
                                 <span class="nombre">${p.articulo}</span>
@@ -1182,22 +1182,6 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
