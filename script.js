@@ -815,7 +815,7 @@ function mostrarHorarios() {
     });
 }
 function mostrarUbicacion() {
-    const direccion = "Cl. 43 #34-25 barrio El Prado, Bucaramanga";
+    const direccion = "Cl. 49 #32-27, Cabecera, Bucaramanga, Santander";
     
     Swal.fire({
         title: '📍 Ubicación',
@@ -1182,6 +1182,20 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
