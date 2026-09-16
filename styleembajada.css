@@ -102,13 +102,16 @@ body {
 .card-producto:active { transform: scale(0.96); }
 .card-producto:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-/* Contenedor de Imagen o 'Sin Foto' */
+/* Contenedor de Imagen */
 .contenedor-media {
   width: 100%;
-  height: 130px; /* Altura fija */
+  height: 130px;
   overflow: hidden;
-  background: #222; /* Fondo para cuando no hay foto */
+  background: #2b1216; /* Tono vino tinto oscuro para que encaje con el logo */
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contenedor-media img {
@@ -117,28 +120,26 @@ body {
   object-fit: cover;
 }
 
-/* Estilo para productos SIN FOTO (Carga el logo oficial) */
+/* Estilo para productos SIN FOTO (Logo Centrado y Claro) */
 .sin-foto {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #181820;
+  background: #2b1216;
 }
 
-/* Renderiza el logo como fondo suavizado */
 .sin-foto::after {
   content: '';
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   background-image: url('https://nube.menwapp.com/embajada/imagenes/portada_logo.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.35; /* Ajusta la transparencia si deseas que resalte más o menos */
+  opacity: 1; /* Color completo sin opacidad */
 }
-
 /* Informacion del Producto */
 .card-producto .info {
   padding: 12px;
