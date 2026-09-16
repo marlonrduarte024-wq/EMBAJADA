@@ -880,7 +880,7 @@ function renderMenu() {
 
     const categorias = Object.keys(menuData);
     
-    // Usamos fragmentos para optimizar la inserción en el DOM
+    // Fragmentos para optimizar la inserción en el DOM
     const fragmentNav = document.createDocumentFragment();
     const fragmentMenu = document.createDocumentFragment();
 
@@ -924,7 +924,7 @@ function renderMenu() {
         });
 
         if (hayRecomendados) {
-            // Botón Nav
+            // Botón Nav Horizontal
             const btnChef = document.createElement("button");
             btnChef.innerText = "🥢 Recomendados";
 
@@ -932,7 +932,6 @@ function renderMenu() {
                 document.querySelectorAll("#nav-categorias button").forEach(b => b.classList.remove("activo"));
                 e.target.classList.add("activo");
                 cambiarCategoria("recomendados");
-                toggleCategorias();
             };
 
             fragmentNav.appendChild(btnChef);
@@ -955,7 +954,7 @@ function renderMenu() {
 
         const esInicial = (cat === window.categoriaInicial);
 
-        // Botón Nav
+        // Botón Nav Horizontal
         const btn = document.createElement("button");
         btn.innerText = cat;
 
@@ -965,7 +964,6 @@ function renderMenu() {
             document.querySelectorAll("#nav-categorias button").forEach(b => b.classList.remove("activo"));
             e.target.classList.add("activo");
             cambiarCategoria(cat);
-            toggleCategorias();
         };
 
         fragmentNav.appendChild(btn);
@@ -991,7 +989,6 @@ function renderMenu() {
             const imgRuta = img ? limpiarRuta(img) : '';
             const diasConfigurados = menuConfig?.recomendados?.[cod];
 
-            // Si la promo existe pero no tiene días activos, ocultamos el producto
             if (
                 diasConfigurados &&
                 Array.isArray(diasConfigurados) &&
@@ -1003,7 +1000,6 @@ function renderMenu() {
             const esRecomendadoGeneral = diasConfigurados && diasConfigurados.length > 0;
             const esRecHoy = diasConfigurados?.some(d => normalizar(d) === hoy);
 
-            // Deshabilitado si es de la lista de recomendados pero NO le toca hoy
             const estaDeshabilitado = esRecomendadoGeneral && !esRecHoy;
 
             html += `
@@ -1028,7 +1024,7 @@ function renderMenu() {
         fragmentMenu.appendChild(divCat);
     });
 
-    // Inserción masiva en el DOM (Una sola operación)
+    // Inserción en el DOM
     navCont.appendChild(fragmentNav);
     menuCont.appendChild(fragmentMenu);
 }
@@ -1178,14 +1174,6 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
-
-
-
-
-
-
-
-
 
 
 
