@@ -117,7 +117,7 @@ body {
   object-fit: cover;
 }
 
-/* Estilo para productos SIN FOTO */
+/* Estilo para productos SIN FOTO (Cambiado a Comida China) */
 .sin-foto {
   position: absolute;
   inset: 0;
@@ -127,19 +127,37 @@ body {
 }
 
 .sin-foto::after {
-  content: '🍔'; /* Icono por defecto */
+  content: '🥢'; /* Cambio de hamburguesa a palillos chinos */
   font-size: 2.5rem;
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
+/* Informacion del Producto */
 .card-producto .info {
   padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
+  background-color: #181820; /* Fondo oscuro consistente con el tema */
 }
 
+/* Color y Visibilidad del Nombre del Producto */
+.card-producto .info .nombre {
+  color: #ffffff !important; /* Forzar texto blanco visible */
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.2;
+  display: block;
+}
+
+/* Color del Precio */
+.card-producto .info .precio {
+  color: #ffb700 !important; /* Color dorado/amarillo brillante */
+  font-size: 1.1rem;
+  font-weight: 800;
+}
 .card-producto .nombre { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
 .card-producto .precio { color: var(--color-secundario); font-weight: bold; font-size: 1.1rem; }
 
@@ -881,3 +899,4 @@ img:not([src]) {
   border-color: #ffb700;
   font-weight: 800;
 }
+
