@@ -868,7 +868,6 @@ function renderMenu() {
 
     if (!menuCont || !navCont || !menuData) return;
 
-    // Limpieza previa del DOM
     menuCont.innerHTML = "";
     navCont.innerHTML = "";
 
@@ -880,7 +879,6 @@ function renderMenu() {
 
     const categorias = Object.keys(menuData);
     
-    // Fragmentos para optimizar la inserción en el DOM
     const fragmentNav = document.createDocumentFragment();
     const fragmentMenu = document.createDocumentFragment();
 
@@ -924,19 +922,21 @@ function renderMenu() {
         });
 
         if (hayRecomendados) {
-            // Botón Nav Horizontal
             const btnChef = document.createElement("button");
             btnChef.innerText = "🥢 Recomendados";
 
             btnChef.onclick = (e) => {
                 document.querySelectorAll("#nav-categorias button").forEach(b => b.classList.remove("activo"));
                 e.target.classList.add("activo");
-                cambiarCategoria("recomendados");
+                
+                // Mostrar solo recomendados
+                document.querySelectorAll(".bloque-categoria").forEach(b => b.style.display = "none");
+                const catElement = document.getElementById("cat-recomendados");
+                if (catElement) catElement.style.display = "block";
             };
 
             fragmentNav.appendChild(btnChef);
 
-            // Bloque Recomendados
             const divChef = document.createElement("div");
             divChef.className = "bloque-categoria seccion-chef";
             divChef.id = "cat-recomendados";
@@ -953,6 +953,7 @@ function renderMenu() {
     categorias.forEach((cat) => {
 
         const esInicial = (cat === window.categoriaInicial);
+        const catId = "cat-" + normalizar(cat).replace(/\s+/g, "");
 
         // Botón Nav Horizontal
         const btn = document.createElement("button");
@@ -961,9 +962,16 @@ function renderMenu() {
         if (esInicial) btn.classList.add("activo");
 
         btn.onclick = (e) => {
+            // 1. Cambiar estado visual del botón
             document.querySelectorAll("#nav-categorias button").forEach(b => b.classList.remove("activo"));
             e.target.classList.add("activo");
-            cambiarCategoria(cat);
+
+            // 2. Ocultar todas las categorías y mostrar solo la seleccionada
+            document.querySelectorAll(".bloque-categoria").forEach(b => b.style.display = "none");
+            const targetCat = document.getElementById(catId);
+            if (targetCat) {
+                targetCat.style.display = "block";
+            }
         };
 
         fragmentNav.appendChild(btn);
@@ -971,7 +979,7 @@ function renderMenu() {
         // Bloque Categoria
         const divCat = document.createElement("div");
         divCat.className = "bloque-categoria";
-        divCat.id = "cat-" + normalizar(cat).replace(/\s+/g, "");
+        divCat.id = catId;
         divCat.style.display = esInicial ? "block" : "none";
 
         let html = "";
@@ -1174,6 +1182,18 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
