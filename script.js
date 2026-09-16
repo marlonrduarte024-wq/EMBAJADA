@@ -868,23 +868,28 @@ function renderMenu() {
 
     if (!menuCont || !navCont || !menuData) return;
 
+    // Limpieza previa del DOM
     menuCont.innerHTML = "";
     navCont.innerHTML = "";
 
     const normalizar = str =>
-        str?.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        str?.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 
     const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const hoy = normalizar(diasSemana[new Date().getDay()]);
 
     const categorias = Object.keys(menuData);
+    
+    // Usamos fragmentos para optimizar la inserción en el DOM
+    const fragmentNav = document.createDocumentFragment();
+    const fragmentMenu = document.createDocumentFragment();
 
     // =========================
-    // ⭐ RECOMENDADOS (VISIBLE AL INICIO)
+    // ⭐ RECOMENDADOS DEL DÍA
     // =========================
     if (menuConfig?.recomendados && Object.keys(menuConfig.recomendados).length > 0) {
 
-        let htmlChef = `<h3 class="titulo-categoria">🍔⭐ Promo del día (${hoy}) ⭐🍔</h3><div class="grid-productos">`;
+        let htmlChef = `<h3 class="titulo-categoria">🥢 Especialidad de la casa (${diasSemana[new Date().getDay()]}) 🥢</h3><div class="grid-productos">`;
         let hayRecomendados = false;
 
         categorias.forEach(cat => {
@@ -898,12 +903,15 @@ function renderMenu() {
                     hayRecomendados = true;
 
                     const img = imagenes[cod] || p.imagen;
+                    const imgRuta = img ? limpiarRuta(img) : '';
 
                     htmlChef += `
                         <div class="card-producto card-recomendado" onclick='abrirModalProducto(${JSON.stringify(p)})'>
                             <div class="contenedor-media">
                                 <span class="badge-estrella">⭐ Hoy</span>
-                                ${img ? `<img src="${limpiarRuta(img)}" loading="lazy" decoding="async">` : '<div class="sin-foto"></div>'}
+                                ${imgRuta 
+                                    ? `<img src="${imgRuta}" loading="lazy" decoding="async" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'sin-foto\\'>🥢</div>';">` 
+                                    : '<div class="sin-foto">🥢</div>'}
                             </div>
                             <div class="info">
                                 <span class="nombre">${p.articulo}</span>
@@ -916,9 +924,9 @@ function renderMenu() {
         });
 
         if (hayRecomendados) {
-            // BOTÓN NAV
+            // Botón Nav
             const btnChef = document.createElement("button");
-            btnChef.innerText = "⭐ Recomendados";
+            btnChef.innerText = "🥢 Recomendados";
 
             btnChef.onclick = (e) => {
                 document.querySelectorAll("#nav-categorias button").forEach(b => b.classList.remove("activo"));
@@ -927,16 +935,16 @@ function renderMenu() {
                 toggleCategorias();
             };
 
-            navCont.appendChild(btnChef);
+            fragmentNav.appendChild(btnChef);
 
-            // BLOQUE (VISIBLE)
+            // Bloque Recomendados
             const divChef = document.createElement("div");
             divChef.className = "bloque-categoria seccion-chef";
             divChef.id = "cat-recomendados";
-            divChef.style.display = "block"; // ✅ YA NO SE OCULTA
+            divChef.style.display = "block";
 
             divChef.innerHTML = htmlChef + `</div>`;
-            menuCont.appendChild(divChef);
+            fragmentMenu.appendChild(divChef);
         }
     }
 
@@ -947,7 +955,7 @@ function renderMenu() {
 
         const esInicial = (cat === window.categoriaInicial);
 
-        // BOTÓN NAV
+        // Botón Nav
         const btn = document.createElement("button");
         btn.innerText = cat;
 
@@ -960,67 +968,70 @@ function renderMenu() {
             toggleCategorias();
         };
 
-        navCont.appendChild(btn);
+        fragmentNav.appendChild(btn);
 
-        // BLOQUE
+        // Bloque Categoria
         const divCat = document.createElement("div");
         divCat.className = "bloque-categoria";
         divCat.id = "cat-" + normalizar(cat).replace(/\s+/g, "");
-
-        // 🔥 SOLO LA INICIAL visible (tu comportamiento original)
         divCat.style.display = esInicial ? "block" : "none";
 
         let html = "";
 
         const banner = menuConfig?.banners_categoria?.[cat]?.trim();
         if (banner) {
-            html += `<div class="banner-categoria-grupo"><img src="${limpiarRuta(banner)}"></div>`;
+            html += `<div class="banner-categoria-grupo"><img src="${limpiarRuta(banner)}" loading="lazy" decoding="async"></div>`;
         }
 
         html += `<h3 class="titulo-categoria">${cat}</h3><div class="grid-productos">`;
 
-    menuData[cat].forEach(p => {
-    const cod = String(p.codigo).trim();
-    const img = imagenes[cod] || p.imagen;
-    const diasConfigurados = menuConfig?.recomendados?.[cod];
+        menuData[cat].forEach(p => {
+            const cod = String(p.codigo).trim();
+            const img = imagenes[cod] || p.imagen;
+            const imgRuta = img ? limpiarRuta(img) : '';
+            const diasConfigurados = menuConfig?.recomendados?.[cod];
 
-// Si la promo existe pero no tiene días activos,
-// ocultamos completamente el producto
-    if (
-        diasConfigurados &&
-        Array.isArray(diasConfigurados) &&
-        diasConfigurados.length === 0
-    ) {
-        return;
-    }
-    const esRecomendadoGeneral = diasConfigurados && diasConfigurados.length > 0;
-    const esRecHoy = diasConfigurados?.some(d => normalizar(d) === hoy);
+            // Si la promo existe pero no tiene días activos, ocultamos el producto
+            if (
+                diasConfigurados &&
+                Array.isArray(diasConfigurados) &&
+                diasConfigurados.length === 0
+            ) {
+                return;
+            }
 
-    // Definimos si el producto debe estar deshabilitado:
-    // Es decir: está en la lista de recomendados pero NO es su día hoy.
-    const estaDeshabilitado = esRecomendadoGeneral && !esRecHoy;
+            const esRecomendadoGeneral = diasConfigurados && diasConfigurados.length > 0;
+            const esRecHoy = diasConfigurados?.some(d => normalizar(d) === hoy);
 
-    html += `
-        <div class="card-producto ${estaDeshabilitado ? 'producto-deshabilitado' : ''}" 
-             ${estaDeshabilitado ? '' : `onclick='abrirModalProducto(${JSON.stringify(p)})'`}>
-            <div class="contenedor-media">
-                ${esRecHoy ? '<span class="badge-estrella">⭐ Recomendado</span>' : ''}
-                ${estaDeshabilitado ? '<div class="overlay-deshabilitado">No disponible hoy</div>' : ''}
-                ${img ? `<img src="${limpiarRuta(img)}" style="${estaDeshabilitado ? 'filter: grayscale(1); opacity: 0.5;' : ''}">` : '<div class="sin-foto"></div>'}
-            </div>
-            <div class="info">
-                <span class="nombre">${p.articulo} ${estaDeshabilitado ? '<small>(Promo otro día)</small>' : ''}</span>
-                <span class="precio" style="${estaDeshabilitado ? 'text-decoration: line-through; color: gray;' : ''}">$${Number(p.precio).toLocaleString()}</span>
-            </div>
-        </div>
-    `;
-});
+            // Deshabilitado si es de la lista de recomendados pero NO le toca hoy
+            const estaDeshabilitado = esRecomendadoGeneral && !esRecHoy;
+
+            html += `
+                <div class="card-producto ${estaDeshabilitado ? 'producto-deshabilitado' : ''}" 
+                     ${estaDeshabilitado ? '' : `onclick='abrirModalProducto(${JSON.stringify(p)})'`}>
+                    <div class="contenedor-media">
+                        ${esRecHoy ? '<span class="badge-estrella">⭐ Recomendado</span>' : ''}
+                        ${estaDeshabilitado ? '<div class="overlay-deshabilitado">No disponible hoy</div>' : ''}
+                        ${imgRuta 
+                            ? `<img src="${imgRuta}" loading="lazy" decoding="async" style="${estaDeshabilitado ? 'filter: grayscale(1); opacity: 0.5;' : ''}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'sin-foto\\'>🥢</div>';">` 
+                            : '<div class="sin-foto">🥢</div>'}
+                    </div>
+                    <div class="info">
+                        <span class="nombre">${p.articulo} ${estaDeshabilitado ? '<small>(🥢 Promo otro día)</small>' : ''}</span>
+                        <span class="precio" style="${estaDeshabilitado ? 'text-decoration: line-through; color: gray;' : ''}">$${Number(p.precio).toLocaleString()}</span>
+                    </div>
+                </div>
+            `;
+        });
 
         divCat.innerHTML = html + `</div>`;
-        menuCont.appendChild(divCat);
+        fragmentMenu.appendChild(divCat);
     });
-}
 
+    // Inserción masiva en el DOM (Una sola operación)
+    navCont.appendChild(fragmentNav);
+    menuCont.appendChild(fragmentMenu);
+}
 function verificarHorario() {
 
     if (!menuConfig?.horarios) return true;
@@ -1167,6 +1178,18 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
