@@ -1,5 +1,9 @@
 
 
+
+
+
+
 // ============================================================
 // ESTADO GLOBAL
 // ============================================================
@@ -478,7 +482,7 @@ let numerosWhatsApp = { domicilio: "", recoger: "" };
 
 
 async function precargarConfiguracion() {
-    const DEFAULT_NUMBER = "3506340678";
+    const DEFAULT_NUMBER = "3173787895";
     const cb = `?cb=${Date.now()}`;
     
     try {
@@ -1182,25 +1186,6 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
