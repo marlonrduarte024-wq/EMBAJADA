@@ -1,9 +1,4 @@
 
-
-
-
-
-
 // ============================================================
 // ESTADO GLOBAL
 // ============================================================
@@ -14,8 +9,10 @@ let descripciones = {};
 let imagenes = {};
 let acompanamientosConfig = { grupos: {}, productos: {} };
 let productoModal = null;
-let adicionalesConfig = { grupos: {}, productos: {} }; // Nueva variable
-
+let adicionalesConfig = { grupos: {}, productos: {} };
+window.listaDomicilios = [];
+window.subtotalCarrito = 0;
+let costoDomicilio = 0;
 
 // ============================================================
 // CONFIGURACIÓN DE RUTAS embajada
@@ -60,7 +57,7 @@ async function inicializarApp() {
     console.log("🚀 Iniciando MenWapp (embajada)...");
 
     try {
-        // Carga en paralelo de los 9 archivos con sus nombres originales
+        // Carga en paralelo de los 10 archivos
         const resultados = await Promise.all([
             cargarArchivo('menu.json'),
             cargarArchivo('menu_config.json'),
@@ -70,18 +67,18 @@ async function inicializarApp() {
             cargarArchivo('sugeridos_promo.json'),
             cargarArchivo('acompanamientos.json'),
             cargarArchivo('adicionales.json'),
-            cargarArchivo('grupo1.json')
+            cargarArchivo('grupo1.json'),
+            cargarArchivo('domi.json')
         ]);
 
-        const [mRaw, cfg, desc, img, prm, sug, acmp, adic, grupoPrincipal] = resultados;
+        const [mRaw, cfg, desc, img, prm, sug, acmp, adic, grupoPrincipal, domi] = resultados;
 
         // --- VALIDACIÓN FUNDAMENTAL ---
-        // Únicamente exige que menu.json se haya obtenido de alguna de las 2 fuentes
         if (!mRaw || !mRaw.menu) {
             throw new Error("No se pudo obtener el menú principal de ninguna ubicación.");
         }
 
-        // Asignación de variables con valores por defecto si los JSONs opcionales no existen
+        // Asignación de variables
         menuData = mRaw.menu;
         window.categoriaInicial = grupoPrincipal?.nombre || Object.keys(menuData)[0];
         
@@ -91,6 +88,8 @@ async function inicializarApp() {
         window.productosSugeridos = sug || {};
         acompanamientosConfig = acmp || { grupos: {}, productos: {} };
         adicionalesConfig = adic || { grupos: {}, productos: {} };
+        window.tarifasDomicilio = domi || {};
+        window.listaDomicilios = (domi && domi.domicilios) ? domi.domicilios.filter(d => d.activo) : [];
 
         // Renderizado
         aplicarPortada();
@@ -122,13 +121,12 @@ async function inicializarApp() {
         }
 
     } catch (error) {
-        console.error("Error crítico de inicialización (Ambas rutas fallaron):", error);
+        console.error("Error crítico de inicialización:", error);
         
-        // --- MENSAJE AUTOMÁTICO SI FALLAN AMBAS RUTAS EN CARGAR EL MENU PRINCIPAL ---
         document.body.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:20px; font-family: 'Poppins', sans-serif; background: #fff;">
             <h1 style="font-size: 4rem;">🍔</h1>
-            <h2 style="color: #333; margin: 20px 0;">En estos momentos no tenemos servicio, Pero puedes ver nuestra carta aquí mismo para que te antojes, DISTRITO donde encuentras las mejores hamburuesas de Bucaramanga🍔🍔🍔:</h2>
+            <h2 style="color: #333; margin: 20px 0;">En estos momentos no tenemos servicio, Pero puedes ver nuestra carta aquí mismo para que te antojes, DISTRITO donde encuentras las mejores hamburguesas de Bucaramanga🍔🍔🍔:</h2>
             
             <div style="width: 100%; max-width: 800px; height: 600px; border: 2px solid #333; border-radius: 10px; overflow: hidden; background: #eee;">
                 <iframe 
@@ -140,6 +138,140 @@ async function inicializarApp() {
             </div>
         </div>
         `;
+    }
+}
+
+// ============================================================
+// VISTA Y LÓGICA DEL CARRITO
+// ============================================================
+function actualizarVistaCarrito() {
+    const cont = document.getElementById("carrito-items");
+    const btnFlotante = document.querySelector(".btn-carrito-flotante");
+    const countFlotante = document.getElementById("carrito-count");
+    
+    let subtotal = 0;
+    let itemsTotales = 0;
+    cont.innerHTML = "";
+
+    carrito.forEach((p, index) => {
+        subtotal += p.precio * p.cantidad;
+        itemsTotales += p.cantidad;
+        cont.innerHTML += `
+            <div class="carrito-item" style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:5px;">
+                <div style="flex:1">
+                    <strong>${p.nombre}</strong> (x${p.cantidad})<br>
+                    <small style="color:#aaa;">${p.observacion || ''}</small>
+                </div>
+                <div style="text-align:right;">
+                    $${(p.precio * p.cantidad).toLocaleString()} 
+                    <button onclick="eliminarDelCarrito(${index})" style="background:none; border:none; color:#ff4444; margin-left:15px; font-size:1.4rem; font-weight:bold; cursor:pointer; padding:5px 10px; line-height:1;">✕</button>
+                </div>
+            </div>`;
+    });
+
+    if (carrito.length > 0) {
+        // Opciones del desplegable cargadas desde listaDomicilios
+        const opcionesBarrios = (window.listaDomicilios || [])
+            .map(d => `<option value="${d.barrio}">${d.barrio}</option>`)
+            .join('');
+
+        cont.innerHTML += `
+            <div style="text-align: right; margin-top: 15px; margin-bottom: 10px;">
+                <button onclick="vaciarCarritoCompleto()" style="background: none; border: none; color: #ff4444; font-size: 0.85rem; font-weight: bold; cursor: pointer; padding: 5px 10px; transition: 0.2s;">
+                    🗑️ Vaciar Carrito
+                </button>
+            </div>
+            <div style="margin-top:20px; padding:15px; padding-bottom: 20px; background:#1a1a1a; border-radius:12px; border:1px solid #333; margin-bottom: 50px;"> 
+                <p style="font-size:0.75rem; font-weight:bold; margin-bottom:12px; text-align:center; color:#fff; letter-spacing:1px;">¿DOMICILIO O RECOGER EN LOCAL?</p>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <label style="flex:1; cursor:pointer;">
+                        <input type="radio" name="tipo_pedido" value="RKO" style="display:none;" onchange="ajustarEstiloMetodo(this)">
+                        <div class="btn-metodo" style="background:#fff; color:#000; text-align:center; padding:12px 5px; border:2px solid var(--color-principal); border-radius:10px; font-weight:bold; font-size:0.8rem; transition:0.3s;">🛵 Domicilio</div>
+                    </label>
+                    <label style="flex:1; cursor:pointer;">
+                        <input type="radio" name="tipo_pedido" value="HBK" style="display:none;" onchange="ajustarEstiloMetodo(this)">
+                        <div class="btn-metodo" style="background:#fff; color:#000; text-align:center; padding:12px 5px; border:2px solid var(--color-principal); border-radius:10px; font-weight:bold; font-size:0.8rem; transition:0.3s;">🥡 Recoger</div>
+                    </label>
+                </div>
+
+                <div id="mensaje-recoger-web" style="display:none; background:#2a2015; border:1px solid #ff9900; color:#ffcc00; padding:10px; border-radius:8px; font-size:0.8rem; text-align:center; font-weight:bold; margin-top:10px; margin-bottom:15px;">
+                    ⚠️ Recuerda que todo pedido para recoger se debe pagar previamente, sigue el proceso y en el chat te enviamos la llave para la transferencia
+                </div>
+                
+                <!-- 📱 Número de Teléfono (WhatsApp) -->
+                <div id="contenedor-telefono-web" style="display:none; margin-top:15px; border-top:1px solid #333; padding-top:15px;">
+                    <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Número de Celular (WhatsApp):</label>
+                    <input type="tel" id="web-telefono" placeholder="Ej. 3016610768" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
+                </div>
+
+                <!-- 📍 Formulario Datos de Entrega -->
+                <div id="formulario-cliente-web" style="display:none; flex-direction:column; gap:10px; margin-top:10px;">
+                    <div>
+                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Tu Nombre completo:</label>
+                        <input type="text" id="web-nombre" placeholder="Ej. Juan Pérez" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
+                    </div>
+                    <div>
+                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Dirección de Entrega:</label>
+                        <input type="text" id="web-direccion" placeholder="Ej. Cra 36 # 41-45 ofc 201" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
+                    </div>
+                    <div>
+                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio:</label>
+                        <select id="web-barrio" onchange="calcularCostoDomicilio()" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
+                            <option value="">-- Selecciona tu barrio --</option>
+                            ${opcionesBarrios}
+                        </select>
+                    </div>
+                    <div id="info-domicilio-costo" style="display:none; justify-content:space-between; font-size:0.85rem; color:#ffcc00; font-weight:bold; margin-top:5px; background:#222; padding:8px; border-radius:6px; border:1px solid #444;">
+                        <span>Costo Domicilio:</span>
+                        <span id="valor-domicilio-texto">$0</span>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    window.subtotalCarrito = subtotal;
+    calcularTotalFinal();
+
+    document.getElementById("btn-whatsapp").disabled = (carrito.length === 0);
+    if (countFlotante) countFlotante.innerText = itemsTotales;
+    if (btnFlotante) btnFlotante.style.display = itemsTotales > 0 ? "flex" : "none";
+}
+// ============================================================
+// CÁLCULO DE DOMICILIO Y TOTAL FINAL
+// ============================================================
+function calcularCostoDomicilio() {
+    const inputBarrio = document.getElementById("web-barrio");
+    const divInfo = document.getElementById("info-domicilio-costo");
+    const txtValor = document.getElementById("valor-domicilio-texto");
+
+    if (!inputBarrio) return;
+
+    const nombreBarrio = inputBarrio.value.trim().toLowerCase();
+    const encontrado = (window.listaDomicilios || []).find(d => d.barrio.toLowerCase() === nombreBarrio);
+
+    if (encontrado) {
+        costoDomicilio = encontrado.valor;
+        if (divInfo) divInfo.style.display = "flex";
+        if (txtValor) txtValor.innerText = "$" + costoDomicilio.toLocaleString();
+    } else {
+        costoDomicilio = 0;
+        if (divInfo) divInfo.style.display = "none";
+    }
+
+    calcularTotalFinal();
+}
+
+function calcularTotalFinal() {
+    const subtotal = window.subtotalCarrito || 0;
+    const radioSeleccionado = document.querySelector('input[name="tipo_pedido"]:checked');
+    const esRecoger = radioSeleccionado && radioSeleccionado.value === 'HBK';
+
+    const domicilioAplicado = esRecoger ? 0 : costoDomicilio;
+    const totalFinal = subtotal + domicilioAplicado;
+
+    const elemTotal = document.getElementById("carrito-total");
+    if (elemTotal) {
+        elemTotal.innerText = "$" + totalFinal.toLocaleString();
     }
 }
 // ============================================================
@@ -1186,6 +1318,7 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
+
 
 
 
