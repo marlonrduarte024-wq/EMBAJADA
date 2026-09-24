@@ -170,7 +170,7 @@ function actualizarVistaCarrito() {
     });
 
     if (carrito.length > 0) {
-        // Opciones del desplegable cargadas desde listaDomicilios
+        // Generamos los <option> con valor y texto explícito
         const opcionesBarrios = (window.listaDomicilios || [])
             .map(d => `<option value="${d.barrio}">${d.barrio}</option>`)
             .join('');
@@ -215,11 +215,11 @@ function actualizarVistaCarrito() {
                         <input type="text" id="web-direccion" placeholder="Ej. Cra 36 # 41-45 ofc 201" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
                     </div>
                     <div>
-                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio:</label>
-                        <select id="web-barrio" onchange="calcularCostoDomicilio()" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
-                            <option value="">-- Selecciona tu barrio --</option>
+                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio (Escribe o selecciona):</label>
+                        <input type="text" id="web-barrio" list="lista-barrios" autocomplete="off" placeholder="Buscar o seleccionar barrio..." onfocus="this.value='';" oninput="calcularCostoDomicilio()" onchange="calcularCostoDomicilio()" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
+                        <datalist id="lista-barrios">
                             ${opcionesBarrios}
-                        </select>
+                        </datalist>
                     </div>
                     <div id="info-domicilio-costo" style="display:none; justify-content:space-between; font-size:0.85rem; color:#ffcc00; font-weight:bold; margin-top:5px; background:#222; padding:8px; border-radius:6px; border:1px solid #444;">
                         <span>Costo Domicilio:</span>
@@ -247,6 +247,8 @@ function calcularCostoDomicilio() {
     if (!inputBarrio) return;
 
     const nombreBarrio = inputBarrio.value.trim().toLowerCase();
+    
+    // Coincidencia exacta ignorando mayúsculas/minúsculas
     const encontrado = (window.listaDomicilios || []).find(d => d.barrio.toLowerCase() === nombreBarrio);
 
     if (encontrado) {
@@ -260,7 +262,6 @@ function calcularCostoDomicilio() {
 
     calcularTotalFinal();
 }
-
 function calcularTotalFinal() {
     const subtotal = window.subtotalCarrito || 0;
     const radioSeleccionado = document.querySelector('input[name="tipo_pedido"]:checked');
@@ -1235,6 +1236,11 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
+
+
+
+
+
 
 
 
