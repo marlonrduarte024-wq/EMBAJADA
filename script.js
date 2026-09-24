@@ -216,7 +216,15 @@ function actualizarVistaCarrito() {
                     </div>
                     <div>
                         <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio (Escribe o selecciona):</label>
-                        <input type="text" id="web-barrio" list="lista-barrios" autocomplete="off" placeholder="Buscar o seleccionar barrio..." onfocus="this.value='';" oninput="calcularCostoDomicilio()" onchange="calcularCostoDomicilio()" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
+                        <input type="text" 
+                         id="web-barrio" 
+                         list="lista-barrios" 
+                         autocomplete="off" 
+                         placeholder="Buscar o seleccionar barrio..." 
+                         oninput="calcularCostoDomicilio()" 
+                         onchange="calcularCostoDomicilio()"
+                         onblur="calcularCostoDomicilio()" 
+                         style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
                         <datalist id="lista-barrios">
                             ${opcionesBarrios}
                         </datalist>
@@ -239,6 +247,15 @@ function actualizarVistaCarrito() {
 // ============================================================
 // CÁLCULO DE DOMICILIO Y TOTAL FINAL
 // ============================================================
+// Función para limpiar texto (quita artículos, acentos y espacios extra)
+function normalizarTextoBarrio(texto) {
+    return texto
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remueve tildes
+        .replace(/^(el|la|los|las|barrio)\s+/g, '')       // Remueve prefijos comunes
+        .trim();
+}
+
 function calcularCostoDomicilio() {
     const inputBarrio = document.getElementById("web-barrio");
     const divInfo = document.getElementById("info-domicilio-costo");
@@ -246,13 +263,33 @@ function calcularCostoDomicilio() {
 
     if (!inputBarrio) return;
 
-    const nombreBarrio = inputBarrio.value.trim().toLowerCase();
-    
-    // Coincidencia exacta ignorando mayúsculas/minúsculas
-    const encontrado = (window.listaDomicilios || []).find(d => d.barrio.toLowerCase() === nombreBarrio);
+    const textoIngresado = inputBarrio.value.trim();
+    if (!textoIngresado) {
+        costoDomicilio = 0;
+        if (divInfo) divInfo.style.display = "none";
+        calcularTotalFinal();
+        return;
+    }
+
+    const busquedaLimpia = normalizarTextoBarrio(textoIngresado);
+
+    // 1. Intentar coincidencia exacta o por inclusión limpia
+    let encontrado = (window.listaDomicilios || []).find(d => {
+        const barrioBaseLimpio = normalizarTextoBarrio(d.barrio);
+        return barrioBaseLimpio === busquedaLimpia || 
+               barrioBaseLimpio.includes(busquedaLimpia) || 
+               busquedaLimpia.includes(barrioBaseLimpio);
+    });
 
     if (encontrado) {
         costoDomicilio = encontrado.valor;
+        
+        // Opcional: Auto-completar el input con el nombre oficial registrado en el JSON
+        // si el usuario terminó de escribir o cambió de campo.
+        if (document.activeElement !== inputBarrio) {
+            inputBarrio.value = encontrado.barrio;
+        }
+
         if (divInfo) divInfo.style.display = "flex";
         if (txtValor) txtValor.innerText = "$" + costoDomicilio.toLocaleString();
     } else {
@@ -1236,11 +1273,6 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
-
-
-
-
-
 
 
 
