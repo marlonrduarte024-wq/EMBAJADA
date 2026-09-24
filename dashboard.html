@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor Distrito | API Local</title>
+    <title>Monitor Embajada | API Local</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
@@ -37,7 +37,7 @@
 
 <div id="login-overlay">
     <div style="text-align: center; color: white; max-width: 300px; width: 90%;">
-        <h3>🔐 Acceso Distrito</h3>
+        <h3>🔐 Acceso Embajada</h3>
         <input type="password" id="pass-input" class="form-control bg-dark text-white border-secondary mb-2" placeholder="Contraseña">
         <button onclick="validarClave()" class="btn btn-primary w-100 fw-bold">INGRESAR AL MONITOR</button>
     </div>
@@ -266,7 +266,7 @@ function verificarSuscripcion() {
     }
 
     function verComprobante(id) { 
-        document.getElementById('img-comprobante').src = `https://nube.menwapp.com/distrito/imagenes/pedido_${id}.jpg`;
+        document.getElementById('img-comprobante').src = `https://nube.menwapp.com/embajada/imagenes/pedido_${id}.jpg`;
         new bootstrap.Modal(document.getElementById('modalComprobante')).show(); 
     }
     function consultarFechaManual() { cargarDatos(document.getElementById('input-fecha').value); }
@@ -304,3 +304,4 @@ window.onload = () => {
 
 </body>
 </html>
+
