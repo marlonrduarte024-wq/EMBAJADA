@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -61,6 +62,14 @@
                     <button onclick="consultarFechaManual()" class="btn btn-sm btn-outline-info">🔍</button>
                     <button onclick="volverHoy()" class="btn btn-sm btn-outline-secondary" title="Volver a Hoy">🔄</button>
                 </div>
+                <!-- ⏰ FILTRO DE HORAS -->
+                <div class="d-flex gap-1 align-items-center">
+                    <span class="small text-secondary">⏰</span>
+                    <input type="time" id="input-hora-inicio" onchange="dibujarPedidos()" class="form-control form-control-sm bg-dark text-white border-secondary" title="Hora Inicio">
+                    <span class="small text-secondary">a</span>
+                    <input type="time" id="input-hora-fin" onchange="dibujarPedidos()" class="form-control form-control-sm bg-dark text-white border-secondary" title="Hora Fin">
+                    <button onclick="limpiarFiltroHora()" class="btn btn-sm btn-outline-danger" title="Limpiar Horas">❌</button>
+                </div>
                 <div class="d-flex gap-2 align-items-center">
                     <span class="small text-secondary">👤</span>
                     <input type="text" id="input-buscar-cliente" oninput="filtrarPorNombre()" class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Buscar cliente...">
@@ -112,7 +121,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const CLAVE_SECRETA = "Embajada2026";
-    const API_BASE = "https://nube.menwapp.com/api/embajada";
+    const API_BASE = "https://nube.menwapp.com/api/embajada";";
     const FECHA_CORTE = "2026-10-11";
     let pedidosCache = [];
     let filtroActual = "TODOS";
@@ -130,6 +139,131 @@ function validarClave() {
     } else { 
         alert("Clave incorrecta"); 
     }
+}
+
+function obtenerTextoHora(horaCampo) {
+    if (!horaCampo || horaCampo === "None" || horaCampo === "null") return "";
+    // Si viene fecha-hora ISO (ej: 2026-09-24T18:30:00), extraer la parte de la hora HH:MM
+    if (horaCampo.includes("T")) {
+        return horaCampo.split("T")[1].substring(0, 5);
+    }
+    // Si es un string normal HH:MM:SS
+    return horaCampo.substring(0, 5);
+}
+
+function filtrarPedidosPorHora(pedidos) {
+    const hInicio = document.getElementById('input-hora-inicio').value; // ej: "18:00"
+    const hFin = document.getElementById('input-hora-fin').value;       // ej: "22:00"
+
+    if (!hInicio && !hFin) return pedidos;
+
+    return pedidos.filter(p => {
+        const horaPedido = obtenerTextoHora(p.hora_ingreso);
+        if (!horaPedido) return false;
+
+        if (hInicio && hFin) {
+            return horaPedido >= hInicio && horaPedido <= hFin;
+        } else if (hInicio) {
+            return horaPedido >= hInicio;
+        } else if (hFin) {
+            return horaPedido <= hFin;
+        }
+        return true;
+    });
+}
+
+function dibujarPedidos() {
+    const contenedor = document.getElementById('contenedor-pedidos');
+    contenedor.innerHTML = '';
+
+    // 1. Filtrar por estado
+    let filtrados = filtroActual === "TODOS" 
+        ? pedidosCache 
+        : pedidosCache.filter(p => p.estado === filtroActual);
+
+    // 2. Filtrar por nombre de cliente
+    if (busquedaNombreActual !== "") {
+        filtrados = filtrados.filter(p => (p.cliente || '').toLowerCase().includes(busquedaNombreActual));
+    }
+
+    // 3. Filtrar por intervalo de hora de ingreso (RECIBIDO)
+    filtrados = filtrarPedidosPorHora(filtrados);
+
+    // Recalcular contadores y totales en base a la lista filtrada por hora
+    actualizarContadores(filtrados);
+
+    // Renderizar tarjetas
+    filtrados.forEach(p => {
+        const esTransferencia = (p.metodo_pago || '').toLowerCase().includes('transferencia');
+        const esRecoger = (p.barrio || '').trim().toUpperCase() === 'LOCAL';
+        const badgeEntrega = esRecoger 
+            ? `<span class="badge text-white border border-purple" style="background-color: #a855f7;">🏬 RECOGE LOCAL</span>` 
+            : `<span class="badge bg-dark text-white border border-warning">🛵 DOMICILIO</span>`;
+
+        const div = document.createElement('div');
+        div.className = "col-12 col-xxl-6 mb-3";
+        div.innerHTML = `
+            <div class="card pedido-card shadow estado-${p.estado}">
+                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                    <div style="flex: 1; min-width: 200px;">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                            <span class="badge bg-dark border border-secondary text-info">#${p.id_pedido_local || '??'}</span>
+                            <span class="badge bg-secondary" style="font-size:0.7rem">${p.estado || 'RECIBIDO'}</span>
+                            ${badgeEntrega}
+                        </div>
+                        <div class="cliente-info">${(p.cliente || 'CLIENTE SIN NOMBRE').toUpperCase()}</div>
+                        <div class="timeline-container">
+                            <div class="time-box"><span class="time-label">RECIBIDO:</span> <b>${formatearH(p.hora_ingreso)}</b></div>
+                            <div class="time-box text-primary"><span class="time-label text-primary">DESPACHO:</span> <b>${formatearH(p.hora_despacho)}</b></div>
+                            <div class="time-box text-success"><span class="time-label text-success">ENTREGA:</span> <b>${formatearH(p.hora_entrega)}</b></div>
+                        </div>
+                    </div>
+                    <div class="text-md-end text-start p-2 rounded" style="background: rgba(255,255,255,0.03); min-width: 130px; border: 1px solid #2a2a2a;">
+                        <h3 class="text-success fw-bold mb-0" style="font-size: 1.6rem; word-break: break-all;">$${parseFloat(p.total || 0).toLocaleString()}</h3>
+                        <span class="badge badge-pago px-2 py-1 mt-1" style="font-size: 0.75rem;">${(p.metodo_pago || 'EFECTIVO').toUpperCase()}</span>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-7">
+                        <p class="mb-2 info-local"><strong class="text-warning">📍 Dirección:</strong> ${p.direccion || 'No especificada'}</p>
+                        <p class="mb-2 info-local"><strong class="text-info">🏘️ Barrio:</strong> <span class="badge bg-dark text-white border border-info" style="font-size: 0.9rem;">${(p.barrio || 'SIN ESPECIFICAR').toUpperCase()}</span></p>
+                        <div class="detalle-box"><div class="detalle-texto">${p.detalle_pedido || 'Sin detalles'}</div></div>
+                    </div>
+                    <div class="col-md-5 text-end d-flex flex-column justify-content-end gap-2 mt-3 mt-md-0">
+                        ${esTransferencia ? `<button onclick="verComprobante(${p.id_pedido_local})" class="btn ${p.validado ? 'btn-outline-success' : 'btn-outline-danger animate-pulse'} btn-sm fw-bold py-2 w-100">${p.validado ? '✅ PAGO VALIDADO (VER)' : '⚠️ SIN VALIDAR (REVISAR)'}</button>` : ''}
+                        <a href="${p.whatsapp_url || '#'}" target="_blank" class="btn btn-success btn-sm w-100 fw-bold py-2">📱 WHATSAPP</a>
+                    </div>
+                </div>
+            </div>`;
+        contenedor.appendChild(div);
+    });
+}
+
+function actualizarContadores(lista = pedidosCache) {
+    if (!Array.isArray(lista)) return;
+    const validos = lista.filter(p => p.estado !== 'CANCELADO');
+    document.getElementById('count-total').innerText = lista.length;
+    document.getElementById('count-pendientes').innerText = lista.filter(p => p.estado === 'RECIBIDO').length;
+    document.getElementById('count-camino').innerText = lista.filter(p => p.estado === 'DESPACHADO').length;
+    document.getElementById('count-entregados').innerText = lista.filter(p => p.estado === 'ENTREGADO').length;
+    document.getElementById('count-cancelados').innerText = lista.filter(p => p.estado === 'CANCELADO').length;
+    
+    const totalDinero = validos.reduce((acc, p) => acc + parseFloat(p.total || 0), 0);
+    document.getElementById('total-dinero').innerText = `$${totalDinero.toLocaleString()}`;
+    
+    const transf = validos.filter(p => (p.metodo_pago || '').toLowerCase().includes('transferencia')).reduce((acc, p) => acc + parseFloat(p.total || 0), 0);
+    const efec = validos.filter(p => !(p.metodo_pago || '').toLowerCase().includes('transferencia')).reduce((acc, p) => acc + parseFloat(p.total || 0), 0);
+    document.getElementById('total-transferencia').innerText = `$${transf.toLocaleString()}`;
+    document.getElementById('total-efectivo').innerText = `$${efec.toLocaleString()}`;
+    
+    document.getElementById('count-domicilios').innerText = `${validos.length - validos.filter(p => (p.barrio || '').trim().toUpperCase() === 'LOCAL').length} u`;
+    document.getElementById('count-recoger').innerText = `${validos.filter(p => (p.barrio || '').trim().toUpperCase() === 'LOCAL').length} u`;
+}
+
+function limpiarFiltroHora() {
+    document.getElementById('input-hora-inicio').value = '';
+    document.getElementById('input-hora-fin').value = '';
+    dibujarPedidos();
 }
 // Nueva función más precisa
 function obtenerFechaLocal() {
@@ -304,4 +438,3 @@ window.onload = () => {
 
 </body>
 </html>
-
