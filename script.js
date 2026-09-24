@@ -451,90 +451,7 @@ function cerrarModalProducto() {
 // ============================================================
 // CARRITO Y WHATSAPP
 // ============================================================
-function actualizarVistaCarrito() {
-    const cont = document.getElementById("carrito-items");
-    const btnFlotante = document.querySelector(".btn-carrito-flotante");
-    const countFlotante = document.getElementById("carrito-count");
-    
-    let total = 0;
-    let itemsTotales = 0;
-    cont.innerHTML = "";
 
-    carrito.forEach((p, index) => {
-        total += p.precio * p.cantidad;
-        itemsTotales += p.cantidad;
-        cont.innerHTML += `
-            <div class="carrito-item" style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:5px;">
-                <div style="flex:1">
-                    <strong>${p.nombre}</strong> (x${p.cantidad})<br>
-                    <small style="color:#aaa;">${p.observacion}</small>
-                </div>
-                <div style="text-align:right;">
-                    $${(p.precio * p.cantidad).toLocaleString()} 
-                    <button onclick="eliminarDelCarrito(${index})" style="background:none; border:none; color:#ff4444; margin-left:15px; font-size:1.4rem; font-weight:bold; cursor:pointer; padding:5px 10px; line-height:1;">✕</button>
-                </div>
-            </div>`;
-    });
-
-   if (carrito.length > 0) {
-        cont.innerHTML += `
-            <div style="text-align: right; margin-top: 15px; margin-bottom: 10px;">
-                <button onclick="vaciarCarritoCompleto()" style="background: none; border: none; color: #ff4444; font-size: 0.85rem; font-weight: bold; cursor: pointer; padding: 5px 10px; transition: 0.2s;">
-                    🗑️ Vaciar Carrito
-                </button>
-            </div>
-            <div style="margin-top:20px; 
-                    padding:15px; 
-                    padding-bottom: 20px; 
-                    background:#1a1a1a; 
-                    border-radius:12px; 
-                    border:1px solid #333; 
-                    margin-bottom: 50px;"> 
-                <p style="font-size:0.75rem; font-weight:bold; margin-bottom:12px; text-align:center; color:#fff; letter-spacing:1px;">¿DOMICILIO O RECOGER EN LOCAL?</p>
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <label style="flex:1; cursor:pointer;">
-                        <input type="radio" name="tipo_pedido" value="RKO" style="display:none;" onchange="ajustarEstiloMetodo(this)">
-                        <div class="btn-metodo" style="background:#fff; color:#000; text-align:center; padding:12px 5px; border:2px solid var(--color-principal); border-radius:10px; font-weight:bold; font-size:0.8rem; transition:0.3s;">🛵 Domicilio</div>
-                    </label>
-                    <label style="flex:1; cursor:pointer;">
-                        <input type="radio" name="tipo_pedido" value="HBK" style="display:none;" onchange="ajustarEstiloMetodo(this)">
-                        <div class="btn-metodo" style="background:#fff; color:#000; text-align:center; padding:12px 5px; border:2px solid var(--color-principal); border-radius:10px; font-weight:bold; font-size:0.8rem; transition:0.3s;">🥡 Recoger</div>
-                    </label>
-                </div>
-
-                <div id="mensaje-recoger-web" style="display:none; background:#2a2015; border:1px solid #ff9900; color:#ffcc00; padding:10px; border-radius:8px; font-size:0.8rem; text-align:center; font-weight:bold; margin-top:10px; margin-bottom:15px;">
-                    ⚠️ Recuerda que todo pedido para recoger se debe pagar previamente, sigue el proceso y en el chat te enviamos la llave para la transferencia
-                </div>
-                
-                <!-- 📱 OBLIGATORIO SIEMPRE: Número de Teléfono (Se muestra al seleccionar cualquier método) -->
-                <div id="contenedor-telefono-web" style="display:none; margin-top:15px; border-top:1px solid #333; padding-top:15px;">
-                    <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Número de Celular (WhatsApp):</label>
-                    <input type="tel" id="web-telefono" placeholder="Ej. 3016610768" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
-                </div>
-
-                <!-- 📍 DINÁMICO: Solo para Domicilio (Nombre, Dirección, Barrio) -->
-                <div id="formulario-cliente-web" style="display:none; flex-direction:column; gap:10px; margin-top:10px;">
-                    <div>
-                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Tu Nombre completo:</label>
-                        <input type="text" id="web-nombre" placeholder="Ej. Juan Pérez" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
-                    </div>
-                    <div>
-                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Dirección de Entrega:</label>
-                        <input type="text" id="web-direccion" placeholder="Ej. Cra 36 # 41-45 ofc 201" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
-                    </div>
-                    <div>
-                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio:</label>
-                        <input type="text" id="web-barrio" placeholder="Ej. El prado" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
-                    </div>
-                </div>
-            </div>`;
-    }
-
-    document.getElementById("carrito-total").innerText = "$" + total.toLocaleString();
-    document.getElementById("btn-whatsapp").disabled = (carrito.length === 0);
-    if (countFlotante) countFlotante.innerText = itemsTotales;
-    if (btnFlotante) btnFlotante.style.display = itemsTotales > 0 ? "flex" : "none";
-}
 function agregarDesdeModal() {
     if (!productoModal) return;
     
@@ -1318,6 +1235,15 @@ window.onpopstate = function() {
 };
 
 document.addEventListener("DOMContentLoaded", inicializarApp);
+
+
+
+
+
+
+
+
+
 
 
 
