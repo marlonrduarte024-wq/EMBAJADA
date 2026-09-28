@@ -190,7 +190,7 @@ function actualizarVistaCarrito() {
                 </div>
 
                 <div id="mensaje-recoger-web" style="display:none; background:#2a2015; border:1px solid #ff9900; color:#ffcc00; padding:10px; border-radius:8px; font-size:0.8rem; text-align:center; font-weight:bold; margin-top:10px; margin-bottom:15px;">
-                    ⚠️ Recuerda que todo pedido para recoger se debe pagar previamente, sigue el proceso y en el chat te enviamos la llave para la transferencia
+                    ⚠️ Sigue el proceso y en el chat te preguntaremos tu nombre y la forma de pago
                 </div>
                 
                 <!-- 📱 Número de Teléfono (WhatsApp) -->
