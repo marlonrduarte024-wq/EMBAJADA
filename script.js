@@ -306,6 +306,74 @@ document.addEventListener("click", function(e) {
     }
 });
 // ============================================================
+// CÁLCULO DE DOMICILIO Y TOTAL FINAL
+// ============================================================
+// Función para limpiar texto (quita artículos, acentos y espacios extra)
+function normalizarTextoBarrio(texto) {
+    return texto
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remueve tildes
+        .replace(/^(el|la|los|las|barrio)\s+/g, '')       // Remueve prefijos comunes
+        .trim();
+}
+
+function calcularCostoDomicilio() {
+    const inputBarrio = document.getElementById("web-barrio");
+    const divInfo = document.getElementById("info-domicilio-costo");
+    const txtValor = document.getElementById("valor-domicilio-texto");
+
+    if (!inputBarrio) return;
+
+    const textoIngresado = inputBarrio.value.trim();
+    if (!textoIngresado) {
+        costoDomicilio = 0;
+        if (divInfo) divInfo.style.display = "none";
+        calcularTotalFinal();
+        return;
+    }
+
+    const busquedaLimpia = normalizarTextoBarrio(textoIngresado);
+
+    // 1. Intentar coincidencia exacta o por inclusión limpia
+    let encontrado = (window.listaDomicilios || []).find(d => {
+        const barrioBaseLimpio = normalizarTextoBarrio(d.barrio);
+        return barrioBaseLimpio === busquedaLimpia || 
+               barrioBaseLimpio.includes(busquedaLimpia) || 
+               busquedaLimpia.includes(barrioBaseLimpio);
+    });
+
+    if (encontrado) {
+        costoDomicilio = encontrado.valor;
+        
+        // Opcional: Auto-completar el input con el nombre oficial registrado en el JSON
+        // si el usuario terminó de escribir o cambió de campo.
+        if (document.activeElement !== inputBarrio) {
+            inputBarrio.value = encontrado.barrio;
+        }
+
+        if (divInfo) divInfo.style.display = "flex";
+        if (txtValor) txtValor.innerText = "$" + costoDomicilio.toLocaleString();
+    } else {
+        costoDomicilio = 0;
+        if (divInfo) divInfo.style.display = "none";
+    }
+
+    calcularTotalFinal();
+}
+function calcularTotalFinal() {
+    const subtotal = window.subtotalCarrito || 0;
+    const radioSeleccionado = document.querySelector('input[name="tipo_pedido"]:checked');
+    const esRecoger = radioSeleccionado && radioSeleccionado.value === 'HBK';
+
+    const domicilioAplicado = esRecoger ? 0 : costoDomicilio;
+    const totalFinal = subtotal + domicilioAplicado;
+
+    const elemTotal = document.getElementById("carrito-total");
+    if (elemTotal) {
+        elemTotal.innerText = "$" + totalFinal.toLocaleString();
+    }
+}
+// ============================================================
 // LÓGICA DE PRODUCTOS Y MODAL
 // ============================================================
 function abrirModalProducto(p) {
