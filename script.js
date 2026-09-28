@@ -170,11 +170,6 @@ function actualizarVistaCarrito() {
     });
 
     if (carrito.length > 0) {
-        // Generamos los <option> con valor y texto explícito
-        const opcionesBarrios = (window.listaDomicilios || [])
-            .map(d => `<option value="${d.barrio}">${d.barrio}</option>`)
-            .join('');
-
         cont.innerHTML += `
             <div style="text-align: right; margin-top: 15px; margin-bottom: 10px;">
                 <button onclick="vaciarCarritoCompleto()" style="background: none; border: none; color: #ff4444; font-size: 0.85rem; font-weight: bold; cursor: pointer; padding: 5px 10px; transition: 0.2s;">
@@ -214,21 +209,23 @@ function actualizarVistaCarrito() {
                         <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Dirección de Entrega:</label>
                         <input type="text" id="web-direccion" placeholder="Ej. Cra 36 # 41-45 ofc 201" style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
                     </div>
-                    <div>
-                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio (Escribe o selecciona):</label>
+
+                    <!-- 🔽 SELECTOR DESPLEGABLE PERSONALIZADO PARA BARRIOS -->
+                    <div style="position:relative; width:100%;">
+                        <label style="color:#aaa; font-size:0.75rem; display:block; margin-bottom:4px;">Barrio de entrega:</label>
                         <input type="text" 
-                         id="web-barrio" 
-                         list="lista-barrios" 
-                         autocomplete="off" 
-                         placeholder="Buscar o seleccionar barrio..." 
-                         oninput="calcularCostoDomicilio()" 
-                         onchange="calcularCostoDomicilio()"
-                         onblur="calcularCostoDomicilio()" 
-                         style="width:100%; padding:8px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem;">
-                        <datalist id="lista-barrios">
-                            ${opcionesBarrios}
-                        </datalist>
+                               id="web-barrio" 
+                               autocomplete="off" 
+                               placeholder="Selecciona o busca tu barrio..." 
+                               onclick="desplegarBarriosWeb()" 
+                               oninput="filtrarBarriosWeb()" 
+                               style="width:100%; padding:10px; border-radius:6px; border:1px solid #444; background:#222; color:#fff; box-sizing:border-box; font-size:0.85rem; cursor:pointer;">
+                        
+                        <div id="dropdown-barrios-web" 
+                             style="display:none; position:absolute; top:100%; left:0; right:0; max-height:180px; overflow-y:auto; background:#1e1e1e; border:1px solid #444; border-radius:0 0 6px 6px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+                        </div>
                     </div>
+
                     <div id="info-domicilio-costo" style="display:none; justify-content:space-between; font-size:0.85rem; color:#ffcc00; font-weight:bold; margin-top:5px; background:#222; padding:8px; border-radius:6px; border:1px solid #444;">
                         <span>Costo Domicilio:</span>
                         <span id="valor-domicilio-texto">$0</span>
@@ -244,74 +241,70 @@ function actualizarVistaCarrito() {
     if (countFlotante) countFlotante.innerText = itemsTotales;
     if (btnFlotante) btnFlotante.style.display = itemsTotales > 0 ? "flex" : "none";
 }
+
 // ============================================================
-// CÁLCULO DE DOMICILIO Y TOTAL FINAL
+// FUNCIONES COMPLEMENTARIAS DEL DROPDOWN DE BARRIOS
 // ============================================================
-// Función para limpiar texto (quita artículos, acentos y espacios extra)
-function normalizarTextoBarrio(texto) {
-    return texto
-        .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remueve tildes
-        .replace(/^(el|la|los|las|barrio)\s+/g, '')       // Remueve prefijos comunes
-        .trim();
-}
 
-function calcularCostoDomicilio() {
-    const inputBarrio = document.getElementById("web-barrio");
-    const divInfo = document.getElementById("info-domicilio-costo");
-    const txtValor = document.getElementById("valor-domicilio-texto");
+function renderizarMenuBarrios(lista) {
+    const contenedor = document.getElementById("dropdown-barrios-web");
+    if (!contenedor) return;
 
-    if (!inputBarrio) return;
-
-    const textoIngresado = inputBarrio.value.trim();
-    if (!textoIngresado) {
-        costoDomicilio = 0;
-        if (divInfo) divInfo.style.display = "none";
-        calcularTotalFinal();
+    if (!lista || lista.length === 0) {
+        contenedor.innerHTML = `<div style="padding:10px; color:#888; font-size:0.8rem; text-align:center;">No se encontró el barrio</div>`;
         return;
     }
 
-    const busquedaLimpia = normalizarTextoBarrio(textoIngresado);
-
-    // 1. Intentar coincidencia exacta o por inclusión limpia
-    let encontrado = (window.listaDomicilios || []).find(d => {
-        const barrioBaseLimpio = normalizarTextoBarrio(d.barrio);
-        return barrioBaseLimpio === busquedaLimpia || 
-               barrioBaseLimpio.includes(busquedaLimpia) || 
-               busquedaLimpia.includes(barrioBaseLimpio);
-    });
-
-    if (encontrado) {
-        costoDomicilio = encontrado.valor;
-        
-        // Opcional: Auto-completar el input con el nombre oficial registrado en el JSON
-        // si el usuario terminó de escribir o cambió de campo.
-        if (document.activeElement !== inputBarrio) {
-            inputBarrio.value = encontrado.barrio;
-        }
-
-        if (divInfo) divInfo.style.display = "flex";
-        if (txtValor) txtValor.innerText = "$" + costoDomicilio.toLocaleString();
-    } else {
-        costoDomicilio = 0;
-        if (divInfo) divInfo.style.display = "none";
-    }
-
-    calcularTotalFinal();
+    contenedor.innerHTML = lista.map(item => `
+        <div onclick="seleccionarBarrioWeb('${item.barrio}')" 
+             style="padding:10px 12px; color:#fff; font-size:0.85rem; cursor:pointer; border-bottom:1px solid #2a2a2a; transition:background 0.15s;"
+             onmouseover="this.style.background='#333'" 
+             onmouseout="this.style.background='transparent'">
+            ${item.barrio}
+        </div>
+    `).join('');
 }
-function calcularTotalFinal() {
-    const subtotal = window.subtotalCarrito || 0;
-    const radioSeleccionado = document.querySelector('input[name="tipo_pedido"]:checked');
-    const esRecoger = radioSeleccionado && radioSeleccionado.value === 'HBK';
 
-    const domicilioAplicado = esRecoger ? 0 : costoDomicilio;
-    const totalFinal = subtotal + domicilioAplicado;
-
-    const elemTotal = document.getElementById("carrito-total");
-    if (elemTotal) {
-        elemTotal.innerText = "$" + totalFinal.toLocaleString();
-    }
+function desplegarBarriosWeb() {
+    renderizarMenuBarrios(window.listaDomicilios || []);
+    const dropdown = document.getElementById("dropdown-barrios-web");
+    if (dropdown) dropdown.style.display = "block";
 }
+
+function filtrarBarriosWeb() {
+    const inputBarrio = document.getElementById("web-barrio");
+    const dropdown = document.getElementById("dropdown-barrios-web");
+    if (!inputBarrio || !dropdown) return;
+
+    const texto = normalizarTextoBarrio(inputBarrio.value);
+    const filtrados = (window.listaDomicilios || []).filter(d => 
+        normalizarTextoBarrio(d.barrio).includes(texto)
+    );
+
+    renderizarMenuBarrios(filtrados);
+    dropdown.style.display = "block";
+    calcularCostoDomicilio();
+}
+
+function seleccionarBarrioWeb(nombreBarrio) {
+    const inputBarrio = document.getElementById("web-barrio");
+    const dropdown = document.getElementById("dropdown-barrios-web");
+    
+    if (inputBarrio) inputBarrio.value = nombreBarrio;
+    if (dropdown) dropdown.style.display = "none";
+    
+    calcularCostoDomicilio();
+}
+
+// Oculta el desplegable si el usuario toca en cualquier otra parte de la pantalla
+document.addEventListener("click", function(e) {
+    const input = document.getElementById("web-barrio");
+    const dropdown = document.getElementById("dropdown-barrios-web");
+
+    if (input && dropdown && !input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = "none";
+    }
+});
 // ============================================================
 // LÓGICA DE PRODUCTOS Y MODAL
 // ============================================================
